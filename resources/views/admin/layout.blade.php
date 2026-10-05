@@ -405,6 +405,26 @@
 
             @endif
 
+
+            <a href="{{ route('notifications.index') }}"
+               class="{{ request()->routeIs('notifications.*') ? 'active' : '' }}">
+
+                <span class="nav-icon">🔔</span>
+
+                Notifications
+
+                @php
+                    $adminUnread = auth()->user()?->unreadNotifications()->count() ?? 0;
+                @endphp
+
+                @if($adminUnread > 0)
+                    <span style="background: #dc2626; color: white; border-radius: 10px; padding: 2px 7px; font-size: 11px; font-weight: bold; margin-left: auto;">
+                        {{ $adminUnread }}
+                    </span>
+                @endif
+
+            </a>
+
         </nav>
 
 

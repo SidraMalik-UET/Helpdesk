@@ -434,7 +434,7 @@
                 @endif
 
 
-                <form action="{{ route('tickets.store') }}" method="POST">
+                <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data">
 
                     @csrf
 
@@ -564,6 +564,33 @@
                     </div>
 
 
+                    <div class="form-group">
+
+                        <label for="attachment">
+                            Attachment (Optional)
+                        </label>
+
+                        <input
+                            type="file"
+                            id="attachment"
+                            name="attachment"
+                            class="form-control"
+                            accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+                        >
+
+                        <div class="help-text">
+                            Allowed: JPG, JPEG, PNG, PDF, DOC, DOCX — Maximum 5MB
+                        </div>
+
+                        @error('attachment')
+                            <div style="color: #dc2626; font-size: 13px; margin-top: 6px;">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+
                     <div class="form-footer">
 
                         <div class="required-note">
@@ -572,7 +599,7 @@
 
                         <div class="button-group">
 
-                            <a href="/dashboard" class="btn btn-cancel">
+                            <a href="{{ route('dashboard') }}" class="btn btn-cancel">
                                 Cancel
                             </a>
 

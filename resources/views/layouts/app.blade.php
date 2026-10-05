@@ -40,6 +40,35 @@
                         Tickets
                     </a>
 
+                    {{-- Notifications with Unread Count --}}
+                    <a href="{{ route('notifications.index') }}"
+                       id="nav-notifications-link"
+                       style="position: relative; text-decoration: none;">
+
+                        🔔 Notifications
+
+                        @php
+                            $unreadCount = auth()->user()
+                                ->unreadNotifications()
+                                ->count();
+                        @endphp
+
+                        <span id="nav-notification-badge" style="
+                            background: #dc2626;
+                            color: white;
+                            border-radius: 50%;
+                            padding: 2px 7px;
+                            font-size: 12px;
+                            font-weight: bold;
+                            margin-left: 4px;
+                            {{ $unreadCount > 0 ? '' : 'display: none;' }}
+                        ">
+                            {{ $unreadCount }}
+                        </span>
+
+                    </a>
+
+                    {{-- Admin Panel --}}
                     @if(auth()->user()->role === 'admin')
                         <a href="{{ route('admin.dashboard') }}">
                             Admin Panel
@@ -91,13 +120,9 @@
                 <strong>Please fix the following:</strong>
 
                 <ul>
-
                     @foreach ($errors->all() as $error)
-
                         <li>{{ $error }}</li>
-
                     @endforeach
-
                 </ul>
 
             </div>
@@ -146,3 +171,4 @@
 </body>
 
 </html>
+

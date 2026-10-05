@@ -271,6 +271,46 @@
 
         </div>
 
+        {{-- Original Ticket Attachments --}}
+        @php
+            $ticketAttachments = $ticket->attachments->whereNull('reply_id');
+        @endphp
+
+        @if($ticketAttachments->isNotEmpty())
+            <div class="attachment-list" style="margin-top: 25px; padding-top: 18px; border-top: 1px solid #eee;">
+                <strong>Original Attachments:</strong>
+
+                @foreach($ticketAttachments as $attachment)
+                    <div class="attachment-item">
+                        <a
+                            href="{{ route('tickets.attachments.show', [$ticket, $attachment]) }}"
+                            target="_blank"
+                            style="font-weight: 600; color: #2563eb;"
+                        >
+                            📎 {{ $attachment->file_name }}
+                            @if($attachment->formattedSize())
+                                <small style="color: #6b7280; font-weight: normal;">({{ $attachment->formattedSize() }})</small>
+                            @endif
+                        </a>
+
+                        @if($attachment->isImage())
+                            <a
+                                href="{{ route('tickets.attachments.show', [$ticket, $attachment]) }}"
+                                target="_blank"
+                            >
+                                <img
+                                    src="{{ route('tickets.attachments.show', [$ticket, $attachment]) }}"
+                                    alt="{{ $attachment->file_name }}"
+                                    class="attachment-image"
+                                    loading="lazy"
+                                >
+                            </a>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
     </div>
 
 
@@ -308,12 +348,16 @@
                                 <a
                                     href="{{ route('tickets.attachments.show', [$ticket, $attachment]) }}"
                                     target="_blank"
+                                    style="font-weight: 600; color: #2563eb;"
                                 >
                                     📎 {{ $attachment->file_name }}
+                                    @if($attachment->formattedSize())
+                                        <small style="color: #6b7280; font-weight: normal;">({{ $attachment->formattedSize() }})</small>
+                                    @endif
                                 </a>
 
                                 {{-- Show image preview directly --}}
-                                @if(str_starts_with($attachment->file_type, 'image/'))
+                                @if($attachment->isImage())
 
                                     <a
                                         href="{{ route('tickets.attachments.show', [$ticket, $attachment]) }}"
@@ -323,6 +367,7 @@
                                             src="{{ route('tickets.attachments.show', [$ticket, $attachment]) }}"
                                             alt="{{ $attachment->file_name }}"
                                             class="attachment-image"
+                                            loading="lazy"
                                         >
                                     </a>
 

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\User;
+use App\Models\TicketAttachment;
 
 class Ticket extends Model
 {
@@ -15,6 +17,7 @@ class Ticket extends Model
         'description',
         'priority',
         'status',
+        'assigned_to',
     ];
 
     public function user(): BelongsTo
@@ -30,5 +33,15 @@ class Ticket extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(TicketReply::class);
+    }
+
+    public function assignedAgent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(TicketAttachment::class, 'ticket_id');
     }
 }
