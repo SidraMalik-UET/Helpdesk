@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessNewTicket;
 use App\Models\Ticket;
 use App\Models\TicketAttachment;
 use App\Models\TicketCategory;
@@ -43,6 +44,7 @@ class TicketController extends Controller
             'priority' => $validated['priority'],
             'status' => 'open',
         ]);
+        ProcessNewTicket::dispatch($ticket->id);
 
         // Save original ticket attachment if uploaded
         if ($request->hasFile('attachment')) {
